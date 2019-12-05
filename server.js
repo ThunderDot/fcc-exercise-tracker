@@ -82,7 +82,21 @@ app.post("/api/exercise/add", function(req, res) {
   });
 });
 
-// Query user
+// query user list
+app.get("/api/exercise/users", function(req, res) {
+  User.aggregate([
+    {
+      $project: {
+        username: 1
+      }
+    }
+  ]).exec(function(err, data) {
+    if (err) res.json({ SUCCESS: false, err });
+    res.json(data);
+  });
+});
+
+// Query log user
 app.get("/api/exercise/log?", function(req, res) {
   !req.query.userId
     ? res.send("ERROR: userId is required")
